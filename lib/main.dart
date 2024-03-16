@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:search_database_sheets_api/models/google_sheets_api.dart';
-import 'package:search_database_sheets_api/pages/MyHomePage.dart';
+import 'package:search_database_sheets_api/models/sheets_api_alphabet.dart';
+import 'package:search_database_sheets_api/pages/MainPage.dart';
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await GoogleSheetsAPI.init();
+  await AlphabetSheetsAPI.init();
 
   runApp(MyApp());
 }
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: MainPage(),
     );
   }
 }
