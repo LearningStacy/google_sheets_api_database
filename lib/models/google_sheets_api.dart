@@ -23,5 +23,20 @@ class GoogleSheetsAPI {
       return json ==null ? null:Pokemon.fromJson(json);
   }
 
+  static Future<int> getRowCount() async{
+    if(_pokemonSheet == null) return 0;
+
+    final lastRow = await _pokemonSheet!.values.lastRow();
+
+    return lastRow == null ? 0: int.tryParse(lastRow.first) ?? 0;
+  }
+
+  static Future<List<Pokemon>> getAllPokemon() async{
+    if(_pokemonSheet == null) return <Pokemon>[];
+
+    final allPokemon = await _pokemonSheet!.values.map.allRows();
+    return allPokemon == null ? <Pokemon>[] : allPokemon.map(Pokemon.fromJson).toList();
+  }
+
 
 }
