@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:search_database_sheets_api/models/PokemonFields.dart';
 import 'package:search_database_sheets_api/models/google_sheets_api.dart';
@@ -8,13 +7,18 @@ class MyHomePage extends StatefulWidget{
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
-
-
 }
 
 class _MyHomePageState extends State<MyHomePage>{
  List<Pokemon> allPokemon=[];
-  @override
+ bool isSearching = false;
+
+ final TextEditingController _searchController=  TextEditingController();
+
+ late List<Pokemon> displayedList=List.from(allPokemon);
+
+
+ @override
   void initState(){
     super.initState();
 
@@ -22,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage>{
   }
   
   Future getAllPokemon() async{
-    final allPokemon = await GoogleSheetsAPI.getAllPokemon();
+    allPokemon = await GoogleSheetsAPI.getAllPokemon();
 
     setState(() {
       this.allPokemon = allPokemon;
@@ -30,12 +34,16 @@ class _MyHomePageState extends State<MyHomePage>{
   }
 
 
-late List<Pokemon> displayed_list=List.from(allPokemon);
-
- void filterList(String value){
+ void filterList(String value) async{
    setState(() {
-     displayed_list = allPokemon.where((element) => element.name.toLowerCase().contains(value.toLowerCase())).toList();
+    displayedList =  allPokemon.where((element) => element.name.toLowerCase().contains(value.toLowerCase())).toList();
    });
+ }
+
+ @override
+ void dispose(){
+   super.dispose();
+   _searchController.dispose();
  }
 
   @override
@@ -44,19 +52,22 @@ late List<Pokemon> displayed_list=List.from(allPokemon);
       // backgroundColor: Colors.deepPurpleAccent.shade100,
         appBar: AppBar(
           backgroundColor: Colors.deepPurpleAccent,
-          title: Text('Search a Pokemon'),
+          title: const Text('Search a Pokemon'),
+          titleTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: EdgeInsets.all(16),
+        body:
+        Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              TextField(
-              onChanged: (value) => filterList(value),
-                style: TextStyle(color: Colors.black, ),
+              TextFormField(
+                controller: _searchController,
+
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.deepPurple.shade50.withOpacity(0.5),
@@ -66,26 +77,35 @@ late List<Pokemon> displayed_list=List.from(allPokemon);
                     ),
                     hintText: 'Name of Pokemon',
                     hintStyle: TextStyle(fontStyle: FontStyle.italic, color:Colors.black.withOpacity(0.5)),
-                    prefixIcon: Icon(Icons.search)
+                    prefixIcon: const Icon(Icons.search),
+
                 ),
+                onChanged: (value) => {isSearching=true,filterList(value)},
+
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Expanded(child:
+              displayedList.isEmpty && isSearching == false ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Welcome to Search a Pokemon", style: TextStyle(fontSize: 25),textAlign: TextAlign.center,),
+                  SizedBox(height: 12,),
+                  Text("Enter a letter to begin", style: TextStyle(fontSize: 18),textAlign: TextAlign.center,)
+                ],):
               //display message if no results found
-              displayed_list.length == 0? Center(child: Text("No results found", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),):
+              displayedList.isEmpty && isSearching==true ? const Center(child: Text("No results found", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),):
 
               ListView.builder(
-                  itemCount: displayed_list.length,
+                  itemCount: displayedList.length,
                   itemBuilder: (context,index)=> ListTile(
-                    contentPadding: EdgeInsets.all(8),
-                    title: Text(displayed_list[index].name, style: TextStyle(fontWeight: FontWeight.bold),
+                    contentPadding: const EdgeInsets.all(8),
+                    title: Text(displayedList[index].name, style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text('Generation: ${displayed_list[index].generation}', style: TextStyle(fontWeight: FontWeight.w300),),
-                    trailing: Text("${displayed_list[index].elementType}", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                    subtitle: Text('Generation: ${displayedList[index].generation}', style: const TextStyle(fontWeight: FontWeight.w300),),
+                    trailing: Text(displayedList[index].elementType, style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
                   )
               ),
-
-
 
               ),
             ],
