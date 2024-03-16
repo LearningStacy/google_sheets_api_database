@@ -13,21 +13,20 @@ class MyHomePage extends StatefulWidget{
 }
 
 class _MyHomePageState extends State<MyHomePage>{
-  Pokemon? pokemon;
+ List<Pokemon> allPokemon=[];
 
   @override
   void initState(){
     super.initState();
 
-    getPokemon();
+    getAllPokemon();
   }
   
-  Future getPokemon() async{
-    final pokemon = await GoogleSheetsAPI.getById(10);
-    print(pokemon!.toJson());
+  Future getAllPokemon() async{
+    final allPokemon = await GoogleSheetsAPI.getAllPokemon();
 
     setState(() {
-      this.pokemon = pokemon;
+      this.allPokemon = allPokemon;
     });
   }
 
@@ -72,13 +71,13 @@ class _MyHomePageState extends State<MyHomePage>{
               Expanded(child:
               //display message if no results found
               ListView.builder(
-                  itemCount: 3,
+                  itemCount: allPokemon.length,
                   itemBuilder: (context,index)=> ListTile(
                     contentPadding: EdgeInsets.all(8),
-                    title: Text('Hello', style: TextStyle(fontWeight: FontWeight.bold),
+                    title: Text(allPokemon[index]!.name, style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text('hello world', style: TextStyle(fontWeight: FontWeight.w300),),
-                    trailing: Text("bye", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                    subtitle: Text('Generation: ${allPokemon[index]!.generation}', style: TextStyle(fontWeight: FontWeight.w300),),
+                    trailing: Text("${allPokemon[index]!.elementType}", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
                   )
               ),
 
