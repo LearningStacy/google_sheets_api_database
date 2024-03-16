@@ -43,3 +43,9 @@ Flutter application that uses Google Sheets API to read data. Using Google Sheet
 |28|	Unown|	Psychic|	2|
 |29| Wobbuffet|	Psychic|	2|
 |30|	Girafarig|	Normal/Psychic|	2|
+
+## Resources that I used:
+- Google Spreadsheets API tutorial: 
+    - [Create & Save Google Spreadsheets](https://www.youtube.com/watch?v=3UJ6RnWTGIY)
+    - [Read & Fetch Google Spreadsheets](https://www.youtube.com/watch?v=qAEb7VytWP8&t=160s)
+- [Chat GPT for Programmers](blackbox.ai) to generate Pokemon Table
