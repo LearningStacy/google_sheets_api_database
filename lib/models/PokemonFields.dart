@@ -6,3 +6,21 @@ class PokemonFields{
 
 
 }
+
+class Pokemon{
+  final int? id;
+  final String name;
+  final String elementType;
+  final String generation;
+
+  const Pokemon({
+    this.id, required this.name, required this.elementType, required this.generation
+  });
+
+  Map<String, dynamic> toJson() => {
+    PokemonFields.id: id,
+    PokemonFields.name:name,
+    PokemonFields.elementType: elementType,
+    PokemonFields.generation: generation
+  };
+}
