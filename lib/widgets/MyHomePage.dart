@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:search_database_sheets_api/models/PokemonFields.dart';
 import 'package:search_database_sheets_api/models/google_sheets_api.dart';
 
 class MyHomePage extends StatefulWidget{
@@ -12,16 +13,22 @@ class MyHomePage extends StatefulWidget{
 }
 
 class _MyHomePageState extends State<MyHomePage>{
+  Pokemon? pokemon;
+
   @override
   void initState(){
     super.initState();
 
-    getAllPokemon();
+    getPokemon();
   }
   
-  Future getAllPokemon() async{
+  Future getPokemon() async{
     final pokemon = await GoogleSheetsAPI.getById(10);
     print(pokemon!.toJson());
+
+    setState(() {
+      this.pokemon = pokemon;
+    });
   }
 
 
