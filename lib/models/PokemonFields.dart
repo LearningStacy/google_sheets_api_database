@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class PokemonFields{
   static final String id='ID';
   static final String name = 'Name of Pokemon';
@@ -25,7 +27,7 @@ class Pokemon{
 }) => Pokemon(id: id??this.id,name: name??this.name, elementType: elementType??this.elementType, generation: generation??this.generation);
   
   static Pokemon fromJson(Map<String, dynamic> json) => Pokemon(
-      id: json[PokemonFields.id],
+      id: jsonDecode(json[PokemonFields.id]),
       name: json[PokemonFields.name],
       elementType: json[PokemonFields.elementType],
       generation: json[PokemonFields.generation]
