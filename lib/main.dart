@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:search_database_sheets_api/models/google_sheets_api.dart';
+import 'package:search_database_sheets_api/widgets/MyHomePage.dart';
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Container(),
+      home: MyHomePage(),
     );
   }
 }
