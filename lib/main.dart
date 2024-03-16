@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:search_database_sheets_api/models/google_sheets_api.dart';
 
 Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await GoogleSheetsAPI.init();
+
   runApp(MyApp());
 }
 
