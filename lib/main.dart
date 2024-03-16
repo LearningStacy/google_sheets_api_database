@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:search_database_sheets_api/models/google_sheets_api.dart';
-import 'package:search_database_sheets_api/widgets/MyHomePage.dart';
+import 'package:search_database_sheets_api/pages/MyHomePage.dart';
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
