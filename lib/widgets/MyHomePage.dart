@@ -14,7 +14,6 @@ class MyHomePage extends StatefulWidget{
 
 class _MyHomePageState extends State<MyHomePage>{
  List<Pokemon> allPokemon=[];
-
   @override
   void initState(){
     super.initState();
@@ -31,10 +30,13 @@ class _MyHomePageState extends State<MyHomePage>{
   }
 
 
-  //filtered results
-  void filterList(String value){
+late List<Pokemon> displayed_list=List.from(allPokemon);
 
-  }
+ void filterList(String value){
+   setState(() {
+     displayed_list = allPokemon.where((element) => element.name.toLowerCase().contains(value.toLowerCase())).toList();
+   });
+ }
 
   @override
   Widget build(BuildContext context){
@@ -53,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage>{
             children: [
 
               TextField(
-
+              onChanged: (value) => filterList(value),
                 style: TextStyle(color: Colors.black, ),
                 decoration: InputDecoration(
                     filled: true,
@@ -70,14 +72,16 @@ class _MyHomePageState extends State<MyHomePage>{
               SizedBox(height: 20,),
               Expanded(child:
               //display message if no results found
+              displayed_list.length == 0? Center(child: Text("No results found", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),):
+
               ListView.builder(
-                  itemCount: allPokemon.length,
+                  itemCount: displayed_list.length,
                   itemBuilder: (context,index)=> ListTile(
                     contentPadding: EdgeInsets.all(8),
-                    title: Text(allPokemon[index]!.name, style: TextStyle(fontWeight: FontWeight.bold),
+                    title: Text(displayed_list[index].name, style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text('Generation: ${allPokemon[index]!.generation}', style: TextStyle(fontWeight: FontWeight.w300),),
-                    trailing: Text("${allPokemon[index]!.elementType}", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                    subtitle: Text('Generation: ${displayed_list[index].generation}', style: TextStyle(fontWeight: FontWeight.w300),),
+                    trailing: Text("${displayed_list[index].elementType}", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
                   )
               ),
 
